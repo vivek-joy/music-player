@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import {View, StyleSheet, TextInput, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import Touchable from 'react-native-platform-touchable';
 import Text from '../../components/common/Text';
 import colors from '../../themes/colors';
 import commonStyle from '../../themes/commonStyle';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {color} from 'react-native-reanimated';
+import spacing from '../../themes/spacing';
 const Login = () => {
   const [form, setForm] = useState({
     email: '',
@@ -15,6 +17,7 @@ const Login = () => {
   const [focused, setFocused] = useState({email: false, password: false});
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <KeyboardAwareScrollView contentContainerStyle={styles.content}>
         <TextInput
           style={[
@@ -50,21 +53,37 @@ const Login = () => {
         </Touchable>
 
         <Text
-          style={{marginBottom: 16, textAlign: 'center', fontSize: 20}}
+          style={{marginBottom: spacing(4), textAlign: 'center', fontSize: 20}}
           bold>
           OR
         </Text>
 
-        <Touchable style={[styles.loginButton, styles.fbButton]}>
-          <Text style={styles.loginText} bold>
-            Login with Facebook
-          </Text>
+        <Touchable>
+          <View style={[styles.loginButton, styles.fbButton]}>
+            <Icon
+              name="facebook"
+              color={colors.white}
+              size={24}
+              style={styles.iconStyle}
+            />
+            <Text style={styles.loginText} bold>
+              Login with Facebook
+            </Text>
+          </View>
         </Touchable>
 
-        <Touchable style={[styles.loginButton, styles.googleButton]}>
-          <Text style={styles.loginText} bold>
-            Login with Google
-          </Text>
+        <Touchable>
+          <View style={[styles.loginButton, styles.googleButton]}>
+            <Icon
+              name="google"
+              color={colors.white}
+              size={24}
+              style={styles.iconStyle}
+            />
+            <Text style={styles.loginText} bold>
+              Login with Google
+            </Text>
+          </View>
         </Touchable>
       </KeyboardAwareScrollView>
     </View>
@@ -78,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black,
   },
   content: {
-    padding: 16,
+    padding: spacing(4),
     justifyContent: 'center',
 
     flex: 1,
@@ -87,10 +106,10 @@ const styles = StyleSheet.create({
     ...commonStyle.textNormal,
     height: 48,
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing(4),
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.8)',
-    marginBottom: 20,
+    marginBottom: spacing(5),
   },
   focusedStyle: {
     borderWidth: 2,
@@ -103,25 +122,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    marginBottom: 16,
+    marginBottom: spacing(4),
   },
 
   loginText: {
-    fontSize: 18,
+    fontSize: 20,
   },
 
   fbButton: {
     flexDirection: 'row',
     alignItems: 'center',
+
+    paddingHorizontal: spacing(4),
+    backgroundColor: colors.facebook,
     justifyContent: 'center',
-    backgroundColor: 'blue',
   },
 
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: spacing(4),
     justifyContent: 'center',
-    backgroundColor: 'red',
+    backgroundColor: colors.google,
+  },
+  iconStyle: {
+    marginRight: spacing(4),
   },
 });
 
