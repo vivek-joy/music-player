@@ -7,17 +7,34 @@ import colors from '../../themes/colors';
 import commonStyle from '../../themes/commonStyle';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import spacing from '../../themes/spacing';
-const Login = () => {
+const Register = () => {
   const [form, setForm] = useState({
+    username: '',
     email: '',
     password: '',
   });
 
-  const [focused, setFocused] = useState({email: false, password: false});
+  const [focused, setFocused] = useState({
+    username: false,
+    email: false,
+    password: false,
+  });
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <KeyboardAwareScrollView contentContainerStyle={styles.content}>
+        <TextInput
+          style={[
+            styles.inputStyle,
+            focused.username ? styles.focusedStyle : null,
+          ]}
+          onChangeText={username => setForm({...form, username})}
+          placeholder="Enter username"
+          placeholderTextColor={'rgba(255,255,255,0.8)'}
+          value={form.username}
+          onFocus={() => setFocused({...focused, username: true})}
+          onBlur={() => setFocused({...focused, username: false})}
+        />
         <TextInput
           style={[
             styles.inputStyle,
@@ -47,7 +64,7 @@ const Login = () => {
         />
         <Touchable style={[styles.loginButton]}>
           <Text bold style={styles.loginText}>
-            Login with email
+            Register with email
           </Text>
         </Touchable>
 
@@ -66,7 +83,7 @@ const Login = () => {
               style={styles.iconStyle}
             />
             <Text style={styles.loginText} bold>
-              Login with Facebook
+              Continue with Facebook
             </Text>
           </View>
         </Touchable>
@@ -80,7 +97,7 @@ const Login = () => {
               style={styles.iconStyle}
             />
             <Text style={styles.loginText} bold>
-              Login with Google
+              Continue with Google
             </Text>
           </View>
         </Touchable>
@@ -149,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register;
