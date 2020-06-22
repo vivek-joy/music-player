@@ -19,6 +19,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import Touchable from 'react-native-platform-touchable';
 import spacing from './src/themes/spacing';
+import UserAvatar from './src/components/common/UserAvatar';
 const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -55,6 +56,11 @@ function HomeStack() {
             <Touchable style={{paddingLeft: spacing(4)}}>
               <Feather name="fast-forward" size={40} color={colors.blue} />
             </Touchable>
+          ),
+          headerRight: () => (
+            <View style={{paddingRight: spacing(2)}}>
+              <UserAvatar showStatus />
+            </View>
           ),
         }}
         name="Home"
