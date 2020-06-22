@@ -1,23 +1,48 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, StyleSheet, TextInput, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import Animated, {Easing} from 'react-native-reanimated';
 import Touchable from 'react-native-platform-touchable';
 import Text from '../../components/common/Text';
 import colors from '../../themes/colors';
 import commonStyle from '../../themes/commonStyle';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import spacing from '../../themes/spacing';
+
+const {timing, Value, divide, interpolate} = Animated;
+
 const Login = () => {
+  const scrollY = useRef(new Value(120)).current;
+
+  useEffect(() => {
+    const config = {
+      duration: 1000,
+      toValue: 0,
+      easing: Easing.inOut(Easing.ease),
+    };
+    const animateScroll = timing(scrollY, config);
+    animateScroll.start();
+  }, []);
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
 
   const [focused, setFocused] = useState({email: false, password: false});
+  const scrollOpacity = interpolate(scrollY, {
+    inputRange: [0, 120],
+    outputRange: [1, 0],
+  });
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <KeyboardAwareScrollView contentContainerStyle={styles.content}>
+      <Animated.ScrollView
+        keyboardShouldPersistTaps="always"
+        style={{
+          transform: [{translateY: scrollY}],
+          opacity: scrollOpacity,
+        }}
+        contentContainerStyle={[styles.content]}>
         <TextInput
           style={[
             styles.inputStyle,
@@ -45,6 +70,7 @@ const Login = () => {
           onFocus={() => setFocused({...focused, password: true})}
           onBlur={() => setFocused({...focused, password: false})}
         />
+
         <Touchable style={[styles.loginButton]}>
           <Text bold style={styles.loginText}>
             Login with email
@@ -84,7 +110,7 @@ const Login = () => {
             </Text>
           </View>
         </Touchable>
-      </KeyboardAwareScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };

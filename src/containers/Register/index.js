@@ -1,13 +1,30 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, StyleSheet, TextInput, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import Animated, {Easing} from 'react-native-reanimated';
+
 import Touchable from 'react-native-platform-touchable';
 import Text from '../../components/common/Text';
 import colors from '../../themes/colors';
 import commonStyle from '../../themes/commonStyle';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import spacing from '../../themes/spacing';
+
+const {timing, Value, divide, interpolate} = Animated;
+
 const Register = () => {
+  const scrollY = useRef(new Value(120)).current;
+
+  useEffect(() => {
+    const config = {
+      duration: 1000,
+      toValue: 0,
+      easing: Easing.inOut(Easing.ease),
+    };
+    const animateScroll = timing(scrollY, config);
+    animateScroll.start();
+  }, []);
+
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -19,10 +36,20 @@ const Register = () => {
     email: false,
     password: false,
   });
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <KeyboardAwareScrollView contentContainerStyle={styles.content}>
+      <Animated.ScrollView
+        keyboardShouldPersistTaps="always"
+        style={{
+          transform: [{translateY: scrollY}],
+          opacity: interpolate(scrollY, {
+            inputRange: [0, 120],
+            outputRange: [1, 0],
+          }),
+        }}
+        contentContainerStyle={[styles.content]}>
         <TextInput
           style={[
             styles.inputStyle,
@@ -101,7 +128,7 @@ const Register = () => {
             </Text>
           </View>
         </Touchable>
-      </KeyboardAwareScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
